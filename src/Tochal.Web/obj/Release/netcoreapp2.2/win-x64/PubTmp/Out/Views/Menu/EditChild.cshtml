@@ -1,0 +1,280 @@
+﻿@using System.Collections.Generic
+@using Alamut.Data.Paging
+@using Tochal.Core.DomainModels.SSOT
+@using Tochal.Core.DomainModels.Entity.Menu
+@using Tochal.AppService.Helpers
+@using Tochal.Toolkit
+@using Tochal.Core.DomainModels.Entity.Blog
+@{
+    ViewBag.Title = "ویرایش";
+}
+@model Tochal.Core.DomainModels.DTO.MenuEntity.MenuEntityChildDTO
+
+<style>
+    table, tr {
+        border: 1px solid #ddd;
+    }
+
+    table {
+        border-radius: 25px;
+    }
+
+    td, th {
+        padding: 10px;
+        text-align: center;
+    }
+
+    tfoot td {
+        padding: 0px 10px;
+    }
+
+    thead {
+        background-color: #ddd;
+        color: #464646;
+    }
+
+    th.active {
+        background-color: #d5d5d5;
+    }
+
+    th {
+        padding: 0;
+    }
+
+        th a {
+            width: 100%;
+            height: 37px;
+            display: inline-block;
+            line-height: 37px;
+            position: relative;
+        }
+
+    .fa-sort {
+        line-height: 37px;
+        position: absolute;
+        left: 12px;
+        color: #aaa
+    }
+
+    h3 {
+        font-weight: 900;
+        background-color: #e3e3e3;
+        border: 1px solid #ccc;
+        width: max-content;
+        padding: 10px 20px;
+        border-radius: 10px 0 0 10px;
+        transform: translateX(36px);
+    }
+
+    .Create form, .Edit form {
+        padding: 20px;
+        padding-bottom: 40px;
+        border: 1px solid #ccc;
+        border-radius: 0px 30px
+    }
+</style>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">داشبور</a></li>
+        <li class="breadcrumb-item"><a href="/Menu/Index">لیست منو</a></li>
+        <li class="breadcrumb-item active" aria-current="page">ویرایش منو</li>
+    </ol>
+</nav>
+
+<div class="content _page-scroll animate-panel padding-0">
+    <div class="text-center container col-md-12">
+        <div class="Create row form-group">
+            <div class="col-md-2"></div>
+            <form asp-action="Edit" asp-controller="Menu" class="col-md-8 form-horizontal" enctype="multipart/form-data">
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <input type="hidden" name="ParentId" value="@Model.ParentId" />
+                <input type="hidden" name="Row" value="@Model.Row" />
+                <div class="col-md-12 text-right h2"><h3>فرم ویرایش</h3></div>
+
+                <div class="row margin-right-10">
+
+                    <div class="col-md-6 form-group">
+                        <label class="control-label col-xs-2">نوع صفحه</label>
+                        <div class="col-xs-10">
+                            <select asp-for="PageType" class="form-control">
+                                <option value="" disabled>--- انتخاب کنید ---</option>
+                                @foreach (var item in Enum.GetValues(typeof(PageTypeSSOT)))
+                                {
+                                    <option value="@(item)">@(((PageTypeSSOT)item).GetDisplayName())</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 form-group">
+                        <label class="control-label col-xs-2">نوع نمایش صفحه</label>
+                        <div class="col-xs-10">
+                            <select asp-for="DetailType" class="form-control">
+                                <option value="">---</option>
+                                @foreach (var item in Enum.GetValues(typeof(DetailTypeSSOT)))
+                                {
+                                    <option value="@(item)">@(((DetailTypeSSOT)item).GetDisplayName())</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row margin-right-10">
+                    <div class="col-md-6 form-group">
+                        <label class="control-label col-xs-2">عنوان</label>
+                        <div class="col-xs-10">
+                            <input required placeholder="عنوان" class="form-control" type="text" asp-for="Title" />
+                        </div>
+                    </div>
+                    @* اگر نوع نمایش تک صفحه ای باشد *@
+                    <div class="col-md-6 form-group">
+                        <label class="control-label col-xs-2">زیر عنوان</label>
+                        <div class="col-xs-10">
+                            <input placeholder="زیر عنوان" class="form-control" type="text" asp-for="SubTitle" />
+                        </div>
+                    </div>
+                </div>
+                <div class="inputs" id="HeaderImage">
+                    <div class="form-group row fileDiv" dir="rtl">
+                        <label dir="rtl" class="btn control-label col-sm-3 text-center" onclick="fileChangeHandler(this)">تغییر تصویر هدر؟</label>
+                        <input type="hidden" name="headerImageName" value="@Model.HeaderImage" />
+                    </div>
+                </div>
+                @* اگر نوع نمایش تک صفحه ای باشد *@
+                <div class="row margin-right-10">
+                    <div class="col-md-6 form-group">
+                        <label class="control-label col-xs-2">خلاصه مطلب</label>
+                        <div class="col-xs-10">
+                            <textarea asp-for="ShortContent" placeholder="خلاصه محتوا" class="form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 form-group">
+                        <label class="control-label col-xs-1">محتوا</label>
+                        <div class="col-xs-11">
+                            <textarea asp-for="Content" placeholder="محتوا" class="form-control"></textarea>
+
+                        </div>
+                    </div>
+                </div>
+
+                @* اگر نوع نمایش لینک باشد *@
+                <div class="row margin-right-10">
+                    <div class="col-md-6 form-group">
+                        <label class="control-label col-xs-2">لینک خارجی</label>
+                        <div class="col-xs-10">
+                            <input placeholder="لینک خارجی" class="form-control" type="text" asp-for="Link" />
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-9"></div>
+                <div class="col-md-3"><input class="btn btn-block btn-exir" type="submit" value="ثبت" /></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    new FroalaEditor('#Content', {
+        // Set the image upload URL.
+        imageUploadURL: '/UploadFiles',
+
+        imageUploadParams: {
+            id: 'my_editor'
+        }
+    })
+</script>
+<script>
+    $(function () {
+        function fileChangeHandler(e) {
+        let confirmD = confirm('آیا مطمئن هستید؟ ( تصویر قبلی شما حذف خواهد شد)');
+        let name = $(e).parent().find('[type="hidden"]').attr('name');
+        if (confirmD) {
+            $('[name="mainImage"]').remove();
+            if (name == "mainImageName") {
+                fileinput = `<div class="col-sm-6"><input type="file" input-id="1" name="mainImage" class="form-control" onchange="checkFile(this)"/></div>`;
+            } else {
+                fileinput = `<div class="col-sm-6"><input type="file" input-id="1" name="headerImage" class="form-control" onchange="headerImageFunc(this)"/></div>
+                                                                                                                                                          <div class="col-sm-3 hide" id="headerImageDiv"><a class="btn btn-secondary" target="_blank">مشاهده عکس</a></div>`;
+            }
+            $(e).after(fileinput);
+            $(e).removeAttr('onclick');
+            }
+        let langtype = parseInt('@Model.Lang_Id');
+        console.log(langtype)
+        $('[name="Lang_Id"]').val('fa')
+        if (langtype == 2) {
+        $('[name="Lang_Id"]').val('En')
+            }
+            $('[name="headerImageName"]').parent().parent().hide();
+            if ($('[name="PageType"]').val() == 'Single') {
+                $('[name="headerImageName"]').parent().parent().show()
+                }
+    }
+    function headerImageFunc(e) {
+        var url = URL.createObjectURL(e.files[0]);
+        $('#headerImageDiv').removeClass('hide')
+        $('#headerImageDiv > a').attr('href', url)
+    }
+        function hideAll() {
+            $('[name="DetailType"]').removeAttr('required').parent().parent().hide();
+            $('[name="Title"]').removeAttr('required').parent().parent().hide();
+            $('[name="SubTitle"]').removeAttr('required').parent().parent().hide();
+            $('[name="ShortContent"]').removeAttr('required').parent().parent().hide();
+            $('[name="Content"]').removeAttr('required').parent().parent().hide();
+            $('[name="Link"]').removeAttr('required').parent().parent().hide();
+            $('#headerImage').hide();
+            $('[name="headerImageName"]').parent().parent().hide()
+        }
+        function onandzir() {
+            $('[name="Title"]').attr('required', 'required').parent().parent().show();
+            $('[name="SubTitle"]').attr('required', 'required').parent().parent().show();
+        }
+        hideAll();
+        $('[name="PageType"]').on('change', () => {
+            if ($('[name="PageType"]').val() == 'Single') {
+                hideAll();
+                onandzir();
+                $('[name="ShortContent"]').attr('required', 'required').parent().parent().show();
+                $('[name="Content"]').attr('required', 'required').parent().parent().show();
+                $('#headerImage').show();
+                $('[name="headerImageName"]').parent().parent().show();
+            }
+            if ($('[name="PageType"]').val() == 'List') {
+                hideAll();
+                onandzir();
+                $('[name="DetailType"]').attr('required', 'required').parent().parent().show();
+            }
+            if ($('[name="PageType"]').val() == 'ExternalLink') {
+                hideAll();
+                onandzir();
+                $('[name="Link"]').attr('required', 'required').parent().parent().show();
+            }
+        })
+        $('[name="PageType"]').val("@Model.PageType").trigger('change')
+    })
+
+     function fileChangeHandler(e) {
+        let confirmD = confirm('آیا مطمئن هستید؟ ( تصویر قبلی شما حذف خواهد شد)');
+        let name = $(e).parent().find('[type="hidden"]').attr('name');
+        if (confirmD) {
+            $('[name="mainImage"]').remove();
+            if (name == "mainImageName") {
+                fileinput = `<div class="col-sm-6"><input type="file" input-id="1" name="mainImage" class="form-control" onchange="checkFile(this)"/></div>`;
+            } else {
+                fileinput = `<div class="col-sm-6"><input type="file" input-id="1" name="headerImage" class="form-control" onchange="headerImageFunc(this)"/></div>
+                                                                                                                                                          <div class="col-sm-3 hide" id="headerImageDiv"><a class="btn btn-secondary" target="_blank">مشاهده عکس</a></div>`;
+            }
+            $(e).after(fileinput);
+            $(e).removeAttr('onclick');
+        }
+    }
+    function headerImageFunc(e) {
+        var url = URL.createObjectURL(e.files[0]);
+        $('#headerImageDiv').removeClass('hide')
+        $('#headerImageDiv > a').attr('href', url)
+    }
+</script>

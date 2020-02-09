@@ -1,0 +1,59 @@
+﻿@using Tochal.Core.DomainModels.Entity.Blog
+@using Tochal.Core.DomainModels.SSOT
+@model List<ContentEntity>
+@using Microsoft.Extensions.Options
+@inject IOptions<FileConfig>  fileConfig
+@using DNTPersianUtils.Core
+
+
+
+<div style="background-color:white;z-index:-1;height:100%;width:100vw;display: table-cell;">
+    <section class="digitalSell">
+        <div class="sc-nav">
+            <div class="sc-btn sc-selected" onclick="viewBoxSelect(this)">
+                <i class="fas fa-bus"></i>
+                <h5 class="sc-name">اتوبوس برقی</h5>
+            </div>
+            <div class="sc-btn" onclick="viewBoxSelect(this)">
+                <i class="fas fa-tram"></i>
+                <h5 class="sc-name">تله‌سیژ</h5>
+            </div>
+            <div class="sc-btn" onclick="viewBoxSelect(this)">
+                <i class="fas fa-sleigh"></i>
+                <h5 class="sc-name">سورتمه</h5>
+            </div>
+            <div class="sc-btn" onclick="viewBoxSelect(this)">
+                <i class="fas fa-tram"></i>
+                <h5 class="sc-name">تله‌کابین</h5>
+            </div>
+            <div class="sc-btn" onclick="viewBoxSelect(this)">
+                <i class="fas fa-home"></i>
+                <h5 class="sc-name">رزرو هتل</h5>
+            </div>
+        </div>
+        <div class="leftside">
+            <div class="viewBox">
+                <img src="https://www.shoraonline.ir/wp-content/uploads/2019/06/photo_2019-06-10_12-16-23.jpg" alt="">
+                <img style="display: none;" src="https://media.karnaval.ir/uploads/2019/05/4fffccc0-555c-42eb-8b59-757320dbd770.jpg" alt="">
+                <img style="display: none;" src="https://cdn.takhfifan.com/media/catalog/product/cache/1/gallery/600x372/85e4522595efc69f496374d01ef2bf13/_/1/_1__349_5_1_1.jpg" alt="">
+                <img style="display: none;" src="https://cdn.takhfifan.com/media/catalog/product/cache/1/gallery/600x372/85e4522595efc69f496374d01ef2bf13/1/_/1_702_9_2_1_1_2.jpg" alt="">
+                <img style="display: none;" src="https://www.samtik.com/hotel/gethotelimage/3157/919.jpg" alt="">
+            </div>
+            <div class="titling">
+                <div class="sc-title">
+                    <h2>خرید آنلاین</h2>
+                </div>
+                <div class="sc-pname">
+                    <h2>بلیط اتوبوس</h2>
+                </div>
+                <div class="sc-p">
+                    <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.</p>
+                </div>
+                <div class="purchase" style="direction: rtl;">
+                    <button id="purchase"> رزرو </button>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+

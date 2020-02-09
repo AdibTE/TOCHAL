@@ -1,0 +1,23 @@
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer Localizer
+<section class="background">
+
+
+    @await Component.InvokeAsync("Slider")
+
+    @await Component.InvokeAsync("News")
+
+    <div class="bullshit"></div>
+</section>
+@await Component.InvokeAsync("Ticket")
+
+<!-- <hr style="margin: 100px 0 0 0;background-color:transparent;border: none;"/> -->
+@await Component.InvokeAsync("MostVist")
+
+@await Component.InvokeAsync("SpecialEvent")
+
+@await Component.InvokeAsync("Event")
+@await Component.InvokeAsync("Season")
+

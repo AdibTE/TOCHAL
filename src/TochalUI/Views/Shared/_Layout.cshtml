@@ -1,0 +1,249 @@
+﻿<!DOCTYPE html>
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer Localizer
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>@Localizer["Tochal"]</title>
+    <link rel="stylesheet" href="~/node_modules/@@fortawesome/fontawesome-free/css/all.css">
+    <link href="~/dist/css/bootstrap.css" rel="stylesheet" />
+
+    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <link rel="stylesheet" href="~/styles/style.css">
+    }
+    else
+    {
+        <link rel="stylesheet" href="~/styles/style-ltr.css">
+    }
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/script/script.js"></script>
+
+    @RenderSection("styles", required: false)
+
+</head>
+<body>
+
+    <div class="preloader">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span><p>@Localizer["Loading"]</p></span>
+    </div>
+
+    <div class="filterdiv" style="display:none;width: 100vw;height: 100vh;background-color: rgba(255, 255, 255, 0.7);z-index: 5000;position: fixed;top: 0;"></div>
+
+    <header>
+        @await Component.InvokeAsync("Menu")
+
+    </header>
+
+    <div class="mobilenav">
+        <i class="fas fa-times" onclick="hideout(this)" ontouchstart="hideout(this)"></i>
+        <div>
+            <div class="listnavmob">
+                <ul>
+                    <li><a href="/">خانه</a></li>
+                    <li>
+                        <a onclick="showlist(this)" ontouchstart="showlist(this)">درباره ما</a>
+                        <div class="innerlistmob" style="display: none;">
+                            <ul class="innerulmob">
+                                <h5 onclick="showfinallist(this)" ontouchstart="showfinallist(this)">درباره ما</h5>
+                                <div class="finallist">
+                                    <h5 onclick="hidefinallist(this)" ontouchstart="hidefinallist(this)">درباره ما</h5>
+                                    <li><a href="#">تاریخچه</a></li>
+                                    <li><a href="#">استاندارد ها و گواهینامه ها</a></li>
+                                    <li><a href="#">سوالات متداول</a></li>
+                                </div>
+                            </ul>
+                            <ul class="innerulmob">
+                                <h5 onclick="showfinallist(this)" ontouchstart="showfinallist(this)">شرکت تله کابین توچال</h5>
+                                <div class="finallist">
+                                    <h5 onclick="hidefinallist(this)" ontouchstart="hidefinallist(this)">شرکت تله کابین توچال</h5>
+                                    <li><a href="#">چارت سازمانی</a></li>
+                                    <li><a href="#">اعضای هیات مدیره</a></li>
+                                    <li><a href="#">سهامداران</a></li>
+                                    <li><a href="#">چشم انداز</a></li>
+                                    <li><a href="#">ماموریت</a></li>
+                                    <li><a href="#">صورت مالی</a></li>
+                                </div>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a onclick="showlist(this)" ontouchstart="showlist(this)">خدمات</a>
+                        <div class="innerlistmob" style="display: none;">
+                            <ul class="innerulmob">
+                                <h5 onclick="showfinallist(this)" ontouchstart="showfinallist(this)">ورزشی</h5>
+                                <div class="finallist">
+                                    <h5 onclick="hidefinallist(this)" ontouchstart="hidefinallist(this)">ورزشی</h5>
+                                    <li><a href="#">اسکی</a></li>
+                                    <li><a href="#">تیر و کمان</a></li>
+                                    <li><a href="#">پیاده روی</a></li>
+                                    <li><a href="#">کوهنوردی</a></li>
+                                    <li><a href="#">جامپینگ</a></li>
+                                </div>
+                            </ul>
+                            <ul class="innerulmob">
+                                <h5 onclick="showfinallist(this)" ontouchstart="showfinallist(this)">تفریحی</h5>
+                                <div class="finallist">
+                                    <h5 onclick="hidefinallist(this)" ontouchstart="hidefinallist(this)">تفریحی</h5>
+                                    <li><a href="#">تله کابین</a></li>
+                                    <li><a href="#">سیمولاتور VR</a></li>
+                                    <li><a href="#">تله سیژ</a></li>
+                                    <li><a href="#">سورتمه</a></li>
+                                    <li><a href="#">باشگاه مکعب</a></li>
+                                    <li><a href="#">اتاق فرار</a></li>
+                                    <li><a href="#">بیلیارد</a></li>
+                                    <li><a href="#">زیپ لاین</a></li>
+                                    <li><a href="#">خانه بازی کودکان</a></li>
+                                </div>
+                            </ul>
+                            <ul class="innerulmob">
+                                <h5 onclick="showfinallist(this)" ontouchstart="showfinallist(this)">رفاهی و پذیرائی</h5>
+                                <div class="finallist">
+                                    <h5 onclick="hidefinallist(this)" ontouchstart="hidefinallist(this)">رفاهی و پذیرائی</h5>
+                                    <li><a href="#">رفاهی و پذیرائی</a></li>
+                                    <li><a href="#">فروشگاه</a></li>
+                                    <li><a href="#">گل فروشی</a></li>
+                                    <li><a href="#">لوازم ورزشی و اسکی</a></li>
+                                    <li><a href="#">عکاسی با لباس سنتی</a></li>
+                                    <li><a href="#">اتوبوس برقی</a></li>
+                                </div>
+                            </ul>
+                            <ul class="innerulmob">
+                                <h5 onclick="showfinallist(this)" ontouchstart="showfinallist(this)">هتل توچال</h5>
+                                <div class="finallist">
+                                    <h5 onclick="hidefinallist(this)" ontouchstart="hidefinallist(this)">هتل توچال</h5>
+                                    <li><a href="#">هتل توچال</a></li>
+                                </div>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a onclick="showlist(this)" ontouchstart="showlist(this)">اطلاع رسانی</a>
+                        <div class="innerlistmob" style="display: none;">
+                            <ul class="innerulmob">
+                                <h5 onclick="showfinallist(this)" ontouchstart="showfinallist(this)">اطلاع رسانی</h5>
+                                <div class="finallist">
+                                    <h5 onclick="hidefinallist(this)" ontouchstart="hidefinallist(this)">اطلاع رسانی</h5>
+                                    <li><a href="#">ساعات فعالیت</a></li>
+                                    <li><a href="#">نرخ خدمات</a></li>
+                                    <li><a href="#">راه های دسترسی</a></li>
+                                    <li><a href="#">نقشه ها</a></li>
+                                    <li><a href="#">اخبار</a></li>
+                                </div>
+                            </ul>
+                            <ul class="innerulmob">
+                                <h5 onclick="showfinallist(this)" ontouchstart="showfinallist(this)">همکاری با ما</h5>
+                                <div class="finallist">
+                                    <h5 onclick="hidefinallist(this)" ontouchstart="hidefinallist(this)">همکاری با ما</h5>
+                                    <li><a href="#">آگهی مزائده و مناقصه</a></li>
+                                    <li><a href="#">فرآیند واگذاری اماکن تجاری</a></li>
+                                    <li><a href="#">آگهی استخدام</a></li>
+                                    <li><a href="#">فراخوان</a></li>
+                                </div>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a onclick="showlist(this)" ontouchstart="showlist(this)">گالری</a>
+                        <div class="innerlistmob" style="display: none;">
+                            <ul class="innerulmob">
+                                <h5 onclick="showfinallist(this)" ontouchstart="showfinallist(this)">گالری</h5>
+                                <div class="finallist">
+                                    <h5 onclick="hidefinallist(this)" ontouchstart="hidefinallist(this)">گالری</h5>
+                                    <li><a href="#">فیلم</a></li>
+                                    <li><a href="#">تصویر</a></li>
+                                </div>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a onclick="showlist(this)" ontouchstart="showlist(this)">باشگاه مشتریان</a>
+                        <div class="innerlistmob" style="display: none;">
+                            <ul class="innerulmob">
+                                <h5 onclick="showfinallist(this)" ontouchstart="showfinallist(this)">باشگاه مشتریان</h5>
+                                <div class="finallist">
+                                    <h5 onclick="hidefinallist(this)" ontouchstart="hidefinallist(this)">باشگاه مشتریان</h5>
+                                    <li><a href="#">باشگاه مشتریان</a></li>
+                                </div>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a onclick="showlist(this)" ontouchstart="showlist(this)">ارتباط با ما</a>
+                        <div class="innerlistmob" style="display: none;">
+                            <ul class="innerulmob">
+                                <h5 onclick="showfinallist(this)" ontouchstart="showfinallist(this)">ارتباط با ما</h5>
+                                <div class="finallist">
+                                    <h5 onclick="hidefinallist(this)" ontouchstart="hidefinallist(this)">ارتباط با ما</h5>
+                                    <li><a href="#">اطلاعات تماس</a></li>
+                                    <li><a href="#">انتقادات و پیشنهادات</a></li>
+                                    <li><a href="#">نظرسنجی</a></li>
+                                </div>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="utilitiesmob">
+                <ul>
+                    <li class="weatherli" onclick="listhandlermob('.weatherlist')" ontouchstart="listhandlermob('.weatherlist')">
+                        <a href="#" class="" role="button">
+                            <i class="fas fa-cloud-moon"></i>
+                            <span>آب و هوا</span>
+                        </a>
+                    </li>
+                    <li class="usericonmob" onclick="listhandlermob('.profilelist')" ontouchstart="listhandlermob('.profilelist')">
+                        <a href="#" class="">
+                            <i class="fas fa-user"></i>
+                            <span id="" class="">
+                                <a href="http://185.10.74.119:1200/">ورود</a>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="purchaseicon">
+                        <a href="#" class="" role="button">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>سبد خرید</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    @RenderBody()
+    <footer id="footer">
+        @await Component.InvokeAsync("Footer")
+
+    </footer>
+
+    @if (CultureInfo.CurrentCulture.Name == "fa-IR")
+    {
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+                crossorigin="anonymous"></script>
+    }
+    else
+    {
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+                crossorigin="anonymous"></script>
+    }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    @*<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>*@
+
+    @RenderSection("Scripts", required: false)
+<script>
+    $(function () {
+        $('[data-f-id="pbf"]').remove()
+    })
+</script>
+</body>
+</html>

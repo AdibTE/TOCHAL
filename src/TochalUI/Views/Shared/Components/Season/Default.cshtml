@@ -1,0 +1,45 @@
+﻿@using Tochal.Core.DomainModels.Entity.Blog
+@using Tochal.Core.DomainModels.SSOT
+@model List<ContentEntity>
+@using Microsoft.Extensions.Options
+@inject IOptions<FileConfig>  fileConfig
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    int count = 0;
+}
+<section class="seasons" style="box-shadow:none">
+    @*<div class="s-img">
+            <img src="http://www.endurooffroaders.com/wp-content/uploads/2014/04/P6270006-1024x576.jpg" alt="">
+        </div>*@
+    @foreach (var item in Model)
+    {
+    <div class="s-img" style="display: none;">
+        @*<img src="http://www.tochal.org/images/contents/14474/222.jpg" alt="">*@
+        <img src="@fileConfig.Value.WebAddress@item.MainImage" alt="">
+    </div>
+        <div class="s-text">
+            <h3><span>@item.ShortContent</span></h3>
+           @* <h3>@Localizer["TochalIn"] <span>@item.ShortContent</span></h3>*@
+            <p>
+                @Html.Raw(item.Content)
+            </p>
+            <div class="s-more">
+                <a href="#seasons"><i class="fas fa-angle-left"></i>@Localizer["More"]</a>
+            </div>
+        </div>
+
+    }
+
+   
+
+    <div class="s-btns" style="position:absolute;right:0;">
+        @foreach (var item in Model)
+        {
+            <a href="#seasons" onclick="seasonSlider(@(count++))">@item.Title</a>
+
+        }
+
+    </div>
+</section>

@@ -1,0 +1,367 @@
+﻿@using System.Collections.Generic
+@using Alamut.Data.Paging
+@using Tochal.Core.DomainModels.SSOT
+@using Tochal.Core.DomainModels.Entity.Menu
+@using Tochal.AppService.Helpers
+@using Tochal.Toolkit
+@using Tochal.Core.DomainModels.Entity
+@{
+    ViewBag.Title = "ویرایش";
+}
+@model Tochal.Core.DomainModels.DTO.MenuEntity.MenuEntityParentDTO
+
+<style>
+    table, tr {
+        border: 1px solid #ddd;
+    }
+
+    table {
+        border-radius: 25px;
+    }
+
+    td, th {
+        padding: 10px;
+        text-align: center;
+    }
+
+    tfoot td {
+        padding: 0px 10px;
+    }
+
+    thead {
+        background-color: #ddd;
+        color: #464646;
+    }
+
+    th.active {
+        background-color: #d5d5d5;
+    }
+
+    th {
+        padding: 0;
+    }
+
+        th a {
+            width: 100%;
+            height: 37px;
+            display: inline-block;
+            line-height: 37px;
+            position: relative;
+        }
+
+    .fa-sort {
+        line-height: 37px;
+        position: absolute;
+        left: 12px;
+        color: #aaa
+    }
+
+    h3 {
+        font-weight: 900;
+        background-color: #e3e3e3;
+        border: 1px solid #ccc;
+        width: max-content;
+        padding: 10px 20px;
+        border-radius: 10px 0 0 10px;
+        transform: translateX(36px);
+    }
+
+    .Create form, .Edit form {
+        padding: 20px;
+        padding-bottom: 40px;
+        border: 1px solid #ccc;
+        border-radius: 0px 30px
+    }
+</style>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">داشبور</a></li>
+        <li class="breadcrumb-item"><a href="/Menu/Index">لیست منو</a></li>
+        <li class="breadcrumb-item active" aria-current="page">ویرایش منو</li>
+    </ol>
+</nav>
+<div class="content _page-scroll animate-panel padding-0">
+    <div class="text-center container col-md-12">
+        <div class="Create row form-group">
+            <div class="col-md-2"></div>
+            <form asp-action="Edit" asp-controller="Menu" class="col-md-8 form-horizontal" enctype="multipart/form-data">
+                <input type="hidden" asp-for="Id" value="@Model.Id" />
+
+                <div class="col-md-12 text-right h2"><h3>فرم ویرایش</h3></div>
+
+                <div class="row margin-right-10">
+
+                    @*<div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="form-radio form-radio-inline">
+                                <div class="form-radio-legend state--required">دارای زیرمنو است ؟</div>
+                                <label class="form-radio-label">
+                                    <input asp-for="HaveChaild" class="form-radio-field" type="radio" value="true" />
+                                    <i class="form-radio-button"></i>
+                                    <span>بله</span>
+                                </label>
+                                <label class="form-radio-label">
+                                    <input asp-for="HaveChaild" class="form-radio-field" type="radio" value="false" />
+                                    <i class="form-radio-button"></i>
+                                    <span>خیر</span>
+                                </label>
+                            </div>
+                        </div>*@
+
+                    @*<script>
+                            $(function () {
+                                $("[name='HaveChaild']").change(function () {
+                                    debugger;
+                                    if (this.value == "true") {
+                                        $('.notChild').hide();
+                                        $('#onvan').show();
+                                        $('#mohtava').hide();
+                                        $('#kholaseMatlab').hide();
+                                        $('#linkKhareji').hide();
+                                        $('#noeNamayesh').hide();
+                                        $('#zironvan').hide();
+                                    }
+                                    else {
+                                        $('.notChild').show();
+                                        $('#onvan').hide();
+                                        $("[name='PageType']").val('')
+                                    }
+                                });
+                                $("[name='PageType']").change(function () {
+                                    if ($(this).val() == 'List') {
+                                        $('.list').show();
+                                    }
+                                    else {
+                                        $('.list').hide();
+                                    }
+                                });
+                            });
+                        </script>*@
+                    <div class="col-md-6 form-group notChild" id="noeSafhe" style="display:block">
+
+                        <div class="form-group row" dir="rtl">
+                            <label dir="rtl" class="control-label col-sm-2">زبان:</label>
+                            <div class="col-sm-10">
+                                <select asp-for="Lang_Id" class="form-control" required>
+                                    <option value="" disabled selected>--- انتخاب کنید ---</option>
+                                    @foreach (var item in Enum.GetValues(typeof(LangSSOT)))
+                                    {
+                                        <option value="@(item)">@(((LangSSOT)item).GetDisplayName())</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    @* در صورتی که فرزند نداشته باشد *@
+                    <div class="col-md-6 form-group notChild" style="display:block">
+                        <label class="control-label col-xs-2">نوع صفحه</label>
+                        <div class="col-xs-10">
+                            <select asp-for="PageType" class="form-control">
+                                <option value="">---</option>
+                                @foreach (var item in Enum.GetValues(typeof(PageTypeSSOT)))
+                                {
+                                    <option value="@(item)">@(((PageTypeSSOT)item).GetDisplayName())</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    @* در صورتی که فرزند نداشته باشد *@
+                    @* در صورتی که نوعش لیستی باشد *@
+                    <div id="noeNamayesh" class="col-md-6 form-group list notChild" style="display:block">
+                        <label class="control-label col-xs-2">نوع نمایش صفحه</label>
+                        <div class="col-xs-10">
+                            <select asp-for="DetailType" class="form-control">
+                                <option value="">---</option>
+                                @foreach (var item in Enum.GetValues(typeof(DetailTypeSSOT)))
+                                {
+                                    <option value="@(item)">@(((DetailTypeSSOT)item).GetDisplayName())</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="onvan" class="row margin-right-10 ">
+                    <div class="col-md-6 form-group">
+                        <label class="control-label col-xs-2">عنوان</label>
+                        <div class="col-xs-10">
+                            <input required placeholder="عنوان" class="form-control" type="text" asp-for="Title" />
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row margin-right-10 ">
+                    <div class="col-md-6 form-group" id="zironvan">
+                        <label class="control-label col-xs-2">زیر عنوان</label>
+                        <div class="col-xs-10">
+                            <input required placeholder="زیر عنوان" class="form-control" type="text" asp-for="SubTitle" />
+                        </div>
+                    </div>
+                </div>
+                <div class="inputs">
+                    <div class="form-group row fileDiv" dir="rtl">
+                        <label dir="rtl" class="btn control-label col-sm-3 text-center" onclick="fileChangeHandler(this)">تغییر تصویر هدر؟</label>
+                        <input type="hidden" name="headerImageName" value="@Model.HeaderImage" />
+                    </div>
+                </div>
+                @* در صورتی که فرزند نداشته باشد *@
+                @* در صورتی که نوع نمایشش تک صفحه ای باشد *@
+                <div class="row margin-right-10 notChild" style="display:block">
+                    <div id="kholaseMatlab" class="col-md-6 form-group">
+                        <label class="control-label col-xs-2">خلاصه مطلب</label>
+                        <div class="col-xs-10">
+                            <textarea asp-for="ShortContent" placeholder="خلاصه محتوا" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div id="mohtava" class="col-md-12 form-group">
+                        <label class="control-label col-xs-1">محتوا</label>
+                        <div class="col-xs-11">
+                            <textarea asp-for="Content" placeholder="محتوا" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                @* در صورتی که فرزند نداشته باشد *@
+                @* در صورتی که نوع نمایشش لینک خارجی باشد باشد *@
+                <div class="row margin-right-10 notChild" style="display:block">
+                    <div id="linkKhareji" class="col-md-6 form-group">
+                        <label class="control-label col-xs-2">لینک خارجی</label>
+                        <div class="col-xs-10">
+                            <input placeholder="لینک خارجی" class="form-control" type="text" asp-for="Link" />
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-9"></div>
+                <div class="col-md-3"><input class="btn btn-block btn-exir" type="submit" value="ثبت" /></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    new FroalaEditor('#Content', {
+        // Set the image upload URL.
+        imageUploadURL: '/UploadFiles',
+
+        imageUploadParams: {
+            id: 'my_editor'
+        }
+    })
+</script>
+
+<script>
+    $(function () {
+        let langtype = parseInt('@Model.Lang_Id');
+        console.log(langtype)
+        $('[name="Lang_Id"]').val('fa')
+        if (langtype == 2) {
+        $('[name="Lang_Id"]').val('En')
+        }
+        $('[name="headerImageName"]').parent().parent().hide()
+        if ($('[name="PageType"]').val() == 'Single') {
+            $('[name="headerImageName"]').parent().parent().show()
+        }
+        $('[name="PageType"]').on('change', () => {
+                $('[name="headerImageName"]').parent().parent().hide()
+                if ($('[name="PageType"]').val() == 'Single') {
+                    $('[name="headerImageName"]').parent().parent().show()
+                }
+            });
+        $('#mohtava').hide();
+        $('#kholaseMatlab').hide();
+        $('#linkKhareji').hide();
+        $('#noeNamayesh').hide();
+        $('#onvan').hide();
+        $('#zironvan').hide();
+        $('[name="PageType"]').on('change', () => {
+            let value = $('[name="PageType"]').val();
+            switch (value) {
+                case 'Single': {
+                    $('#mohtava').show();
+                    $('#kholaseMatlab').show();
+                    $('#linkKhareji').hide();
+                    $('#onvan').show();
+                    $('#zironvan').show();
+                      $("textarea[name='Content']").attr('required', 'required');
+                    $("textarea[name='ShortContent']").attr('required', 'required');
+                    break;
+                }
+                case 'List': {
+                    $('#onvan').show();
+                    $('#zironvan').show();
+                    $('#mohtava').hide();
+                    $('#kholaseMatlab').hide();
+                    $('#noeNamayesh').show();
+                    $('#linkKhareji').hide();
+                     $("input[name='Link']").removeAttr('required');
+                    $("textarea[name='Content']").removeAttr('required');
+                    $("textarea[name='ShortContent']").removeAttr('required');
+                    break;
+                }
+                case 'ExternalLink': {
+                    $('#mohtava').hide();
+                    $('#kholaseMatlab').hide();
+                    $('#onvan').show();
+                    $('#zironvan').show();
+                    $('#noeNamayesh').hide();
+                    $('#linkKhareji').show();
+                    $("input[name='Link']").attr('required', 'required');
+                    $("textarea[name='Content']").removeAttr('required');
+                    $("textarea[name='ShortContent']").removeAttr('required');
+                    break;
+                }
+                default: {
+                    $('#mohtava').hide();
+                    $('#kholaseMatlab').hide();
+                    $('#linkKhareji').hide();
+                    $('#noeNamayesh').hide();
+                    $('#onvan').hide();
+                    $('#zironvan').hide();
+                      $("input[name='Link']").removeAttr('required');
+                    $("input[name='Link']").removeAttr('required');
+                    $("input[name='Link']").removeAttr('required');
+                }
+            }
+        })
+        $('[name="PageType"]').val('@Model.PageType').trigger('change');
+        $('[type="submit"]').on('click', (e) => {
+            if ($('[name="PageType"]').val() == "") {
+                alert('لطفا نوع صفحه را مشخص کنید.')
+                e.preventDefault();
+            }
+        })
+        if('@Model.HaveChaild' == 'True') {
+            $('[name="HaveChaild"][value="false"]').attr('checked', 'checked')
+            $('[name="PageType"]').trigger('change');
+        } else {
+            $('[name="HaveChaild"][value="true"]').attr('checked', 'checked');
+            $('[name="PageType"]').trigger('change');
+
+        }
+    })
+    function fileChangeHandler(e) {
+        let confirmD = confirm('آیا مطمئن هستید؟ ( تصویر قبلی شما حذف خواهد شد)');
+        let name = $(e).parent().find('[type="hidden"]').attr('name');
+        if (confirmD) {
+            $('[name="mainImage"]').remove();
+            if (name == "mainImageName") {
+                fileinput = `<div class="col-sm-6"><input type="file" input-id="1" name="mainImage" class="form-control" onchange="checkFile(this)"/></div>`;
+            } else {
+                fileinput = `<div class="col-sm-6"><input type="file" input-id="1" name="headerImage" class="form-control" onchange="headerImageFunc(this)"/></div>
+                                                                                                                                                          <div class="col-sm-3 hide" id="headerImageDiv"><a class="btn btn-secondary" target="_blank">مشاهده عکس</a></div>`;
+            }
+            $(e).after(fileinput);
+            $(e).removeAttr('onclick');
+        }
+    }
+    function headerImageFunc(e) {
+        var url = URL.createObjectURL(e.files[0]);
+        $('#headerImageDiv').removeClass('hide')
+        $('#headerImageDiv > a').attr('href', url)
+    }
+
+</script>
